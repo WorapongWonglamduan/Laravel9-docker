@@ -2,7 +2,7 @@ version: "3.9"
 
 networks:
   web_network:
-    name: laravel8
+    name: laravel9
     driver: bridge
 
 services:
@@ -10,8 +10,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: laravel8-app
-    container_name: laravel8_app
+    image: laravel9-app
+    container_name: laravel9_app
     restart: always
     volumes:
       - ./src:/var/www
@@ -20,13 +20,13 @@ services:
 
       # MySQL Database
   db:
-    image: mysql:8.0
-    container_name: laravel8_mysql
+    image: mysql
+    container_name: laravel9_mysql
     volumes:
       - ./mysql/data:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=1234
-      - MYSQL_DATABASE=laravel8db
+      - MYSQL_DATABASE=laravel9db
       - MYSQL_USER=admin
       - MYSQL_PASSWORD=1234
     ports:
@@ -36,8 +36,8 @@ services:
       - web_network
       #Nginx Web Server Service
   nginx:
-    image: nginx:1.19.8-alpine
-    container_name: laravel8_nginx
+    image: nginx:latest
+    container_name: laravel9_nginx
     volumes:
       - ./src:/var/www
       - ./nginx/conf:/etc/nginx/conf.d
@@ -49,7 +49,7 @@ services:
       # Redis it same local storage
   redis:
     image: redis:6.2.1-buster
-    container_name: laravel8_redis
+    container_name: laravel9_redis
     volumes:
       - ./redis/data:/data
     restart: always
@@ -58,8 +58,8 @@ services:
 
       # mailhog (test send mail local)
   mailhog:
-    image: mailhog/mailhog:v1.0.1
-    container_name: laravel8_mailhog
+    image: mailhog/mailhog
+    container_name: laravel9_mailhog
     ports:
       - 8025:8025
     restart: always
@@ -68,10 +68,10 @@ services:
       - web_network
       # phpmyadmin
   phpmyadmin:
-    image: phpmyadmin:5.1.0-apache
+    image: phpmyadmin
     depends_on:
       - db
-    container_name: laravel8_phpmyadmin
+    container_name: laravel9_phpmyadmin
     environment:
       - PMA_HOST:db
       - PMA_PORT:3306
